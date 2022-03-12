@@ -13,7 +13,7 @@ const PassengerCard = (props) => {
           </Typography>
         </CardContent>
         <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={()=>{window.open(props.data.airline[0].website,'_blank')}}>
           Goto Site
         </Button>
         <Button size="small" color="primary">

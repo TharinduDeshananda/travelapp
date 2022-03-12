@@ -9,11 +9,15 @@ import useStyles from './style';
 const App = () => {
     let classes = useStyles();
     let [data, setData] = useState([]);
+    let [totalPages,setTotalPages] = useState(0);
+    let [totalPassengers,setTotalPassengers] = useState(0);
 
     useEffect(async () => {
         try {
             console.log('fetching data');
             let body = await getAirlinePassengers(0, 10);
+            setTotalPages(body.totalPages);
+            setTotalPassengers(body.totalPassengers);
             setData(body.data);
             console.log('fetch success: ', body);
         } catch (e) {
@@ -45,7 +49,11 @@ const App = () => {
                             Add new Image
                         </Button>
                     </Box>
-                    <Pagination className={classes.pagination} count={10} color="secondary" size='large' />
+                    <Pagination onChange={async (e,pnumber)=>{
+                        let body = await getAirlinePassengers(pnumber, 10);
+                        setData(body.data);
+
+                    }} className={classes.pagination} count={totalPages} color="secondary" size='large' />
 
                     <Grid container spacing={2} justifyContent='center'>
                         {data.map((body,i)=>(<Grid item xs={12} sm={6} key={i}>

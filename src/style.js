@@ -7,6 +7,12 @@ mainTitle:{
 photoIcon:{
     fontSize:'84px',
     marginRight:"20px"
+},
+pagination:{
+    width:'100%',
+    margin:'80px 0px',
+    justifyContent:'center',
+    display:'flex'
 }
 }));
 

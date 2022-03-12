@@ -1,4 +1,4 @@
-import { Typography, CssBaseline, AppBar, Toolbar, Container, Box, Button, Grid, } from '@material-ui/core';
+import { Typography, CssBaseline, AppBar, Toolbar, Container, Box, Button, Grid, CircularProgress } from '@material-ui/core';
 import { PhotoCamera, AddToPhotos } from '@material-ui/icons';
 import { Pagination } from '@material-ui/lab'
 import { useEffect, useState } from 'react';
@@ -11,11 +11,12 @@ const App = () => {
     let [data, setData] = useState([]);
     let [totalPages,setTotalPages] = useState(0);
     let [totalPassengers,setTotalPassengers] = useState(0);
+    let [loadingAirlines,setLoadingAirlines] = useState(true);
 
     useEffect(async () => {
         try {
             console.log('fetching data');
-            let body = await getAirlinePassengers(0, 10);
+            let body = await getAirlinePassengers(0, 10,setLoadingAirlines);
             setTotalPages(body.totalPages);
             setTotalPassengers(body.totalPassengers);
             setData(body.data);
@@ -50,13 +51,14 @@ const App = () => {
                         </Button>
                     </Box>
                     <Pagination onChange={async (e,pnumber)=>{
-                        let body = await getAirlinePassengers(pnumber, 10);
+                        let body = await getAirlinePassengers(pnumber, 10,setLoadingAirlines);
                         setData(body.data);
 
                     }} className={classes.pagination} count={totalPages} color="secondary" size='large' />
 
                     <Grid container spacing={2} justifyContent='center'>
-                        {data.map((body,i)=>(<Grid item xs={12} sm={6} key={i}>
+                        
+                        {loadingAirlines?<CircularProgress color="secondary" />: data.map((body,i)=>(<Grid item xs={12} sm={6} key={i}>
                             <PassengerCard data={body} />
                         </Grid>))}
                     </Grid>
